@@ -62,6 +62,13 @@ async def get_current_user_info(
     """Get current user information."""
     return current_user
 
+@router.get("/me/role")
+async def get_current_user_role(
+    current_user: User = Depends(get_current_active_user)
+):
+    """Return the role of the current authenticated user."""
+    return {"role": getattr(current_user.role, "value", str(current_user.role))}
+
 @router.put("/me", response_model=UserResponse)
 async def update_current_user(
     user_data: UserUpdate,
