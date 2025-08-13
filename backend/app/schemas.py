@@ -17,7 +17,7 @@ class UserBase(BaseSchema):
     phone_number: Optional[str] = Field(None, max_length=20)
     national_id: str = Field(..., min_length=10, max_length=20)
     address: Optional[str] = None
-    role: UserRole = UserRole.CITIZEN
+   # role: UserRole = UserRole.CITIZEN
 
 class UserCreate(UserBase):
     password: str = Field(..., min_length=8)
@@ -113,6 +113,16 @@ class TimeSlotResponse(TimeSlotBase):
     is_available: bool
     current_bookings: int
     created_at: datetime
+
+class TimeSlotRecurringCreate(BaseSchema):
+    service_id: int
+    start_date: datetime
+    end_date: datetime
+    start_time: str  # HH:MM
+    end_time: str    # HH:MM
+    duration_minutes: int = Field(30, ge=15, le=480)
+    max_capacity: int = Field(1, ge=1, le=10)
+    weekdays: Optional[list[int]] = Field(default=None, description="0=Mon .. 6=Sun; None means weekdays only")
 
 # Appointment schemas
 class AppointmentBase(BaseSchema):

@@ -288,6 +288,37 @@ class AppointmentService:
             self.db.rollback()
             return []
 
+    def create_single_time_slot(self, data: TimeSlotCreate) -> TimeSlot:
+        """Create a single time slot."""
+        # Validate service exists and active
+        service = self.db.query(Service).filter(Service.id == data.service_id, Service.is_active == True).first()
+        if not service:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Service not found or inactive")
+        # Basic overlap check
+        overlap = self.db.query(TimeSlot).filter(
+            TimeSlot.service_id == data.service_id,
+            TimeSlot.start_time < data.end_time,
+            TimeSlot.end_time > data.start_time
+        ).first()
+        if overlap:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Time overlaps an existing slot")
+        slot = TimeSlot(
+            service_id=data.service_id,
+            start_time=data.start_time,
+            end_time=data.end_time,
+            is_available=True,
+            max_capacity=data.max_capacity if hasattr(data, 'max_capacity') and data.max_capacity else 1,
+            current_bookings=0
+        )
+        try:
+            self.db.add(slot)
+            self.db.commit()
+            self.db.refresh(slot)
+            return slot
+        except IntegrityError:
+            self.db.rollback()
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Failed to create time slot")
+
     def get_appointment_statistics(self, department_id: Optional[int] = None, 
                                  service_id: Optional[int] = None) -> Dict[str, Any]:
         """Get appointment statistics for dashboard."""

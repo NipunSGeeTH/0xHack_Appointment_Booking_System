@@ -1,0 +1,45 @@
+{
+  "exported_at": "2025-08-13T23:07:34.887839",
+  "tables": {
+    "departments": {
+      "count": 0,
+      "data": []
+    },
+    "services": {
+      "count": 0,
+      "data": []
+    },
+    "users": {
+      "count": 0,
+      "data": []
+    },
+    "government_officers": {
+      "count": 0,
+      "data": []
+    },
+    "time_slots": {
+      "count": 0,
+      "data": []
+    },
+    "appointments": {
+      "count": 0,
+      "data": []
+    },
+    "documents": {
+      "count": 0,
+      "data": []
+    },
+    "notifications": {
+      "count": 0,
+      "data": []
+    },
+    "feedback": {
+      "count": 0,
+      "data": []
+    },
+    "audit_logs": {
+      "count": 0,
+      "data": []
+    }
+  }
+}

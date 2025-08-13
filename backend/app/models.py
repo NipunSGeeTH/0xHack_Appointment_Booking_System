@@ -93,6 +93,7 @@ class TimeSlot(Base):
     max_capacity = Column(Integer, default=1)
     current_bookings = Column(Integer, default=0)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
     # Relationships
     service = relationship("Service", back_populates="time_slots")

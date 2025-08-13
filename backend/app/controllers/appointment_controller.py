@@ -1,13 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
 from typing import List, Optional
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from ..db import get_db
 from ..models import User, AppointmentStatus
 from ..schemas import (
     AppointmentCreate, AppointmentUpdate, AppointmentResponse,
-    TimeSlotCreate, TimeSlotUpdate, AppointmentFilter
+    TimeSlotCreate, TimeSlotUpdate, AppointmentFilter, TimeSlotRecurringCreate
 )
 from ..services.appointment_service import AppointmentService
 from ..utils import get_current_active_user, require_role
@@ -282,6 +282,55 @@ async def create_time_slots(
     )
     
     return [{"id": slot.id, "start_time": slot.start_time, "end_time": slot.end_time} for slot in time_slots]
+
+@router.post("/time-slots/single")
+async def create_single_time_slot(
+    payload: TimeSlotCreate,
+    current_user: User = Depends(require_role("government_officer")),
+    db: Session = Depends(get_db)
+):
+    """Create a single time slot (government officers and admins)."""
+    svc = AppointmentService(db)
+    slot = svc.create_single_time_slot(payload)
+    return {
+        "id": slot.id,
+        "start_time": slot.start_time,
+        "end_time": slot.end_time,
+        "max_capacity": slot.max_capacity,
+        "current_bookings": slot.current_bookings
+    }
+
+@router.post("/time-slots/recurring")
+async def create_recurring_time_slots(
+    payload: TimeSlotRecurringCreate,
+    current_user: User = Depends(require_role("admin")),
+    db: Session = Depends(get_db)
+):
+    """Create recurring time slots for a service over a date range (admin)."""
+    svc = AppointmentService(db)
+    # If weekdays provided, filter days accordingly
+    start_date = payload.start_date
+    end_date = payload.end_date
+    created = []
+    current = start_date
+    while current <= end_date:
+        if payload.weekdays is None:
+            allowed = current.weekday() < 5
+        else:
+            allowed = current.weekday() in payload.weekdays
+        if allowed:
+            created.extend(
+                svc.create_time_slots(
+                    service_id=payload.service_id,
+                    start_date=current,
+                    end_date=current,
+                    start_time=payload.start_time,
+                    end_time=payload.end_time,
+                    duration_minutes=payload.duration_minutes
+                )
+            )
+        current = current + timedelta(days=1)
+    return [{"id": s.id, "start_time": s.start_time, "end_time": s.end_time} for s in created]
 
 @router.get("/time-slots/{service_id}/available")
 async def get_available_time_slots(

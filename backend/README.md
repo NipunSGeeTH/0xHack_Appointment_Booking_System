@@ -103,6 +103,38 @@ alembic upgrade head
 python create_tables.py
 ```
 
+#### Database Scripts
+
+The project includes several database management scripts:
+
+- **`create_tables.py`**: Creates all database tables and triggers
+- **`init_database.py`**: Populates the database with sample data
+- **`database_dump.py`**: Exports database schema and data for backup
+
+#### Creating Database Triggers
+
+The system automatically creates database triggers when you run `create_tables.py`. These triggers ensure:
+
+- **Data Consistency**: When a user is deactivated, related appointments are cancelled
+- **Referential Integrity**: Department deactivation cascades to services and officers
+- **Automatic Updates**: Time slot capacity updates when appointments change status
+- **Audit Logging**: All important changes are automatically logged
+- **Document Verification**: Appointment status updates when documents are verified
+
+#### Sample Data
+
+The `init_database.py` script creates:
+- 5 Government Departments (Motor Traffic, Immigration, Registration, etc.)
+- 12 Government Services (Vehicle Registration, Passport Application, etc.)
+- 9 Sample Users (1 Admin, 3 Officers, 5 Citizens)
+- Multiple Time Slots for the next 30 days
+- Sample Appointments, Documents, Notifications, and Feedback
+
+**Default Login Credentials**:
+- **Admin**: `admin` / `admin123`
+- **Officers**: `officer1`, `officer2`, `officer3` / `officer123`
+- **Citizens**: `citizen1`, `citizen2`, `citizen3`, `citizen4`, `citizen5` / `citizen123`
+
 ### 6. Run the Application
 ```bash
 # Development

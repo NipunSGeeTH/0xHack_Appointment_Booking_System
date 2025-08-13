@@ -1,0 +1,27 @@
+{
+  "dump_info": {
+    "created_at": "2025-08-13T23:07:34.931935",
+    "database_name": "bankdata",
+    "total_tables": 10,
+    "total_records": 0
+  },
+  "table_summary": {
+    "departments": 0,
+    "services": 0,
+    "users": 0,
+    "government_officers": 0,
+    "time_slots": 0,
+    "appointments": 0,
+    "documents": 0,
+    "notifications": 0,
+    "feedback": 0,
+    "audit_logs": 0
+  },
+  "files_created": [
+    "schema.json - Database schema information",
+    "data.json - Database data export",
+    "summary.json - This summary file",
+    "create_tables.sql - SQL script to recreate tables",
+    "insert_data.sql - SQL script to insert sample data"
+  ]
+}

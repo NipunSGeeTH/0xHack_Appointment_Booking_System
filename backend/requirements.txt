@@ -11,6 +11,8 @@ psycopg2-binary==2.9.9
 python-jose[cryptography]==3.3.0
 passlib[bcrypt]==1.7.4
 python-multipart==0.0.6
+# bcrypt backend compatible with passlib on Python 3.13
+bcrypt==4.0.1
 
 # Environment and configuration
 python-dotenv==1.0.0
@@ -48,7 +50,8 @@ fastapi-cors==0.0.6
 
 # QR Code generation
 qrcode[pil]==7.4.2
-Pillow==10.1.0
+# Pillow version compatible with Python 3.13
+Pillow==11.0.0
 
 # Excel support (for reports)
 openpyxl==3.1.2

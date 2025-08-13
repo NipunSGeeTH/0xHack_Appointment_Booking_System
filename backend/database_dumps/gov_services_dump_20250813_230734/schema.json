@@ -1,0 +1,1058 @@
+{
+  "database_name": "bankdata",
+  "tables": {
+    "time_slots": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "nextval('time_slots_id_seq'::regclass)",
+          "autoincrement": true
+        },
+        {
+          "name": "service_id",
+          "type": "INTEGER",
+          "nullable": false,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "start_time",
+          "type": "TIMESTAMP",
+          "nullable": false,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "end_time",
+          "type": "TIMESTAMP",
+          "nullable": false,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "is_available",
+          "type": "BOOLEAN",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "max_capacity",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "current_bookings",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "created_at",
+          "type": "TIMESTAMP",
+          "nullable": true,
+          "default": "now()",
+          "autoincrement": false
+        }
+      ],
+      "primary_keys": [
+        "id"
+      ],
+      "foreign_keys": [
+        {
+          "constrained_columns": [
+            "service_id"
+          ],
+          "referred_table": "services",
+          "referred_columns": [
+            "id"
+          ],
+          "ondelete": null,
+          "onupdate": null
+        }
+      ],
+      "indexes": [
+        {
+          "name": "ix_time_slots_id",
+          "columns": [
+            "id"
+          ],
+          "unique": false
+        }
+      ],
+      "constraints": []
+    },
+    "appointments": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "nextval('appointments_id_seq'::regclass)",
+          "autoincrement": true
+        },
+        {
+          "name": "user_id",
+          "type": "INTEGER",
+          "nullable": false,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "service_id",
+          "type": "INTEGER",
+          "nullable": false,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "time_slot_id",
+          "type": "INTEGER",
+          "nullable": false,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "status",
+          "type": "VARCHAR(9)",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "booking_reference",
+          "type": "VARCHAR(50)",
+          "nullable": false,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "qr_code",
+          "type": "VARCHAR(255)",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "notes",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "created_at",
+          "type": "TIMESTAMP",
+          "nullable": true,
+          "default": "now()",
+          "autoincrement": false
+        },
+        {
+          "name": "updated_at",
+          "type": "TIMESTAMP",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        }
+      ],
+      "primary_keys": [
+        "id"
+      ],
+      "foreign_keys": [
+        {
+          "constrained_columns": [
+            "service_id"
+          ],
+          "referred_table": "services",
+          "referred_columns": [
+            "id"
+          ],
+          "ondelete": null,
+          "onupdate": null
+        },
+        {
+          "constrained_columns": [
+            "time_slot_id"
+          ],
+          "referred_table": "time_slots",
+          "referred_columns": [
+            "id"
+          ],
+          "ondelete": null,
+          "onupdate": null
+        },
+        {
+          "constrained_columns": [
+            "user_id"
+          ],
+          "referred_table": "users",
+          "referred_columns": [
+            "id"
+          ],
+          "ondelete": null,
+          "onupdate": null
+        }
+      ],
+      "indexes": [
+        {
+          "name": "appointments_booking_reference_key",
+          "columns": [
+            "booking_reference"
+          ],
+          "unique": true
+        },
+        {
+          "name": "ix_appointments_id",
+          "columns": [
+            "id"
+          ],
+          "unique": false
+        }
+      ],
+      "constraints": []
+    },
+    "documents": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "nextval('documents_id_seq'::regclass)",
+          "autoincrement": true
+        },
+        {
+          "name": "user_id",
+          "type": "INTEGER",
+          "nullable": false,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "appointment_id",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "document_type",
+          "type": "VARCHAR(100)",
+          "nullable": false,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "file_path",
+          "type": "VARCHAR(500)",
+          "nullable": false,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "file_name",
+          "type": "VARCHAR(255)",
+          "nullable": false,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "file_size",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "mime_type",
+          "type": "VARCHAR(100)",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "is_verified",
+          "type": "BOOLEAN",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "verification_notes",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "uploaded_at",
+          "type": "TIMESTAMP",
+          "nullable": true,
+          "default": "now()",
+          "autoincrement": false
+        },
+        {
+          "name": "verified_at",
+          "type": "TIMESTAMP",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        }
+      ],
+      "primary_keys": [
+        "id"
+      ],
+      "foreign_keys": [
+        {
+          "constrained_columns": [
+            "appointment_id"
+          ],
+          "referred_table": "appointments",
+          "referred_columns": [
+            "id"
+          ],
+          "ondelete": null,
+          "onupdate": null
+        },
+        {
+          "constrained_columns": [
+            "user_id"
+          ],
+          "referred_table": "users",
+          "referred_columns": [
+            "id"
+          ],
+          "ondelete": null,
+          "onupdate": null
+        }
+      ],
+      "indexes": [
+        {
+          "name": "ix_documents_id",
+          "columns": [
+            "id"
+          ],
+          "unique": false
+        }
+      ],
+      "constraints": []
+    },
+    "feedback": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "nextval('feedback_id_seq'::regclass)",
+          "autoincrement": true
+        },
+        {
+          "name": "user_id",
+          "type": "INTEGER",
+          "nullable": false,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "appointment_id",
+          "type": "INTEGER",
+          "nullable": false,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "rating",
+          "type": "INTEGER",
+          "nullable": false,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "comment",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "created_at",
+          "type": "TIMESTAMP",
+          "nullable": true,
+          "default": "now()",
+          "autoincrement": false
+        }
+      ],
+      "primary_keys": [
+        "id"
+      ],
+      "foreign_keys": [
+        {
+          "constrained_columns": [
+            "appointment_id"
+          ],
+          "referred_table": "appointments",
+          "referred_columns": [
+            "id"
+          ],
+          "ondelete": null,
+          "onupdate": null
+        },
+        {
+          "constrained_columns": [
+            "user_id"
+          ],
+          "referred_table": "users",
+          "referred_columns": [
+            "id"
+          ],
+          "ondelete": null,
+          "onupdate": null
+        }
+      ],
+      "indexes": [
+        {
+          "name": "ix_feedback_id",
+          "columns": [
+            "id"
+          ],
+          "unique": false
+        }
+      ],
+      "constraints": []
+    },
+    "departments": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "nextval('departments_id_seq'::regclass)",
+          "autoincrement": true
+        },
+        {
+          "name": "name",
+          "type": "VARCHAR(200)",
+          "nullable": false,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "description",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "location",
+          "type": "VARCHAR(200)",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "contact_number",
+          "type": "VARCHAR(20)",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "email",
+          "type": "VARCHAR(100)",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "operating_hours",
+          "type": "VARCHAR(100)",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "is_active",
+          "type": "BOOLEAN",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "created_at",
+          "type": "TIMESTAMP",
+          "nullable": true,
+          "default": "now()",
+          "autoincrement": false
+        },
+        {
+          "name": "updated_at",
+          "type": "TIMESTAMP",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        }
+      ],
+      "primary_keys": [
+        "id"
+      ],
+      "foreign_keys": [],
+      "indexes": [
+        {
+          "name": "departments_name_key",
+          "columns": [
+            "name"
+          ],
+          "unique": true
+        },
+        {
+          "name": "ix_departments_id",
+          "columns": [
+            "id"
+          ],
+          "unique": false
+        }
+      ],
+      "constraints": []
+    },
+    "services": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "nextval('services_id_seq'::regclass)",
+          "autoincrement": true
+        },
+        {
+          "name": "name",
+          "type": "VARCHAR(200)",
+          "nullable": false,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "description",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "department_id",
+          "type": "INTEGER",
+          "nullable": false,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "duration_minutes",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "max_daily_appointments",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "required_documents",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "is_active",
+          "type": "BOOLEAN",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "created_at",
+          "type": "TIMESTAMP",
+          "nullable": true,
+          "default": "now()",
+          "autoincrement": false
+        },
+        {
+          "name": "updated_at",
+          "type": "TIMESTAMP",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        }
+      ],
+      "primary_keys": [
+        "id"
+      ],
+      "foreign_keys": [
+        {
+          "constrained_columns": [
+            "department_id"
+          ],
+          "referred_table": "departments",
+          "referred_columns": [
+            "id"
+          ],
+          "ondelete": null,
+          "onupdate": null
+        }
+      ],
+      "indexes": [
+        {
+          "name": "ix_services_id",
+          "columns": [
+            "id"
+          ],
+          "unique": false
+        }
+      ],
+      "constraints": []
+    },
+    "users": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "nextval('users_id_seq'::regclass)",
+          "autoincrement": true
+        },
+        {
+          "name": "username",
+          "type": "VARCHAR(50)",
+          "nullable": false,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "email",
+          "type": "VARCHAR(100)",
+          "nullable": false,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "hashed_password",
+          "type": "VARCHAR(255)",
+          "nullable": false,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "first_name",
+          "type": "VARCHAR(100)",
+          "nullable": false,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "last_name",
+          "type": "VARCHAR(100)",
+          "nullable": false,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "phone_number",
+          "type": "VARCHAR(20)",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "national_id",
+          "type": "VARCHAR(20)",
+          "nullable": false,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "address",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "role",
+          "type": "VARCHAR(18)",
+          "nullable": false,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "is_active",
+          "type": "BOOLEAN",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "created_at",
+          "type": "TIMESTAMP",
+          "nullable": true,
+          "default": "now()",
+          "autoincrement": false
+        },
+        {
+          "name": "updated_at",
+          "type": "TIMESTAMP",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        }
+      ],
+      "primary_keys": [
+        "id"
+      ],
+      "foreign_keys": [],
+      "indexes": [
+        {
+          "name": "ix_users_email",
+          "columns": [
+            "email"
+          ],
+          "unique": true
+        },
+        {
+          "name": "ix_users_id",
+          "columns": [
+            "id"
+          ],
+          "unique": false
+        },
+        {
+          "name": "ix_users_username",
+          "columns": [
+            "username"
+          ],
+          "unique": true
+        },
+        {
+          "name": "users_national_id_key",
+          "columns": [
+            "national_id"
+          ],
+          "unique": true
+        }
+      ],
+      "constraints": []
+    },
+    "government_officers": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "nextval('government_officers_id_seq'::regclass)",
+          "autoincrement": true
+        },
+        {
+          "name": "user_id",
+          "type": "INTEGER",
+          "nullable": false,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "department_id",
+          "type": "INTEGER",
+          "nullable": false,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "officer_id",
+          "type": "VARCHAR(50)",
+          "nullable": false,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "designation",
+          "type": "VARCHAR(100)",
+          "nullable": false,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "is_active",
+          "type": "BOOLEAN",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "created_at",
+          "type": "TIMESTAMP",
+          "nullable": true,
+          "default": "now()",
+          "autoincrement": false
+        },
+        {
+          "name": "updated_at",
+          "type": "TIMESTAMP",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        }
+      ],
+      "primary_keys": [
+        "id"
+      ],
+      "foreign_keys": [
+        {
+          "constrained_columns": [
+            "department_id"
+          ],
+          "referred_table": "departments",
+          "referred_columns": [
+            "id"
+          ],
+          "ondelete": null,
+          "onupdate": null
+        },
+        {
+          "constrained_columns": [
+            "user_id"
+          ],
+          "referred_table": "users",
+          "referred_columns": [
+            "id"
+          ],
+          "ondelete": null,
+          "onupdate": null
+        }
+      ],
+      "indexes": [
+        {
+          "name": "government_officers_officer_id_key",
+          "columns": [
+            "officer_id"
+          ],
+          "unique": true
+        },
+        {
+          "name": "ix_government_officers_id",
+          "columns": [
+            "id"
+          ],
+          "unique": false
+        }
+      ],
+      "constraints": []
+    },
+    "notifications": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "nextval('notifications_id_seq'::regclass)",
+          "autoincrement": true
+        },
+        {
+          "name": "user_id",
+          "type": "INTEGER",
+          "nullable": false,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "type",
+          "type": "VARCHAR(24)",
+          "nullable": false,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "title",
+          "type": "VARCHAR(200)",
+          "nullable": false,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "message",
+          "type": "TEXT",
+          "nullable": false,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "is_read",
+          "type": "BOOLEAN",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "sent_via_email",
+          "type": "BOOLEAN",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "sent_via_sms",
+          "type": "BOOLEAN",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "created_at",
+          "type": "TIMESTAMP",
+          "nullable": true,
+          "default": "now()",
+          "autoincrement": false
+        },
+        {
+          "name": "read_at",
+          "type": "TIMESTAMP",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        }
+      ],
+      "primary_keys": [
+        "id"
+      ],
+      "foreign_keys": [
+        {
+          "constrained_columns": [
+            "user_id"
+          ],
+          "referred_table": "users",
+          "referred_columns": [
+            "id"
+          ],
+          "ondelete": null,
+          "onupdate": null
+        }
+      ],
+      "indexes": [
+        {
+          "name": "ix_notifications_id",
+          "columns": [
+            "id"
+          ],
+          "unique": false
+        }
+      ],
+      "constraints": []
+    },
+    "audit_logs": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "nullable": false,
+          "default": "nextval('audit_logs_id_seq'::regclass)",
+          "autoincrement": true
+        },
+        {
+          "name": "user_id",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "action",
+          "type": "VARCHAR(100)",
+          "nullable": false,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "table_name",
+          "type": "VARCHAR(100)",
+          "nullable": false,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "record_id",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "old_values",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "new_values",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "ip_address",
+          "type": "VARCHAR(45)",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "user_agent",
+          "type": "VARCHAR(500)",
+          "nullable": true,
+          "default": null,
+          "autoincrement": false
+        },
+        {
+          "name": "created_at",
+          "type": "TIMESTAMP",
+          "nullable": true,
+          "default": "now()",
+          "autoincrement": false
+        }
+      ],
+      "primary_keys": [
+        "id"
+      ],
+      "foreign_keys": [
+        {
+          "constrained_columns": [
+            "user_id"
+          ],
+          "referred_table": "users",
+          "referred_columns": [
+            "id"
+          ],
+          "ondelete": null,
+          "onupdate": null
+        }
+      ],
+      "indexes": [
+        {
+          "name": "ix_audit_logs_id",
+          "columns": [
+            "id"
+          ],
+          "unique": false
+        }
+      ],
+      "constraints": []
+    }
+  },
+  "created_at": "2025-08-13T23:07:34.831973"
+}

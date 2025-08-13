@@ -50,7 +50,7 @@ class UserService:
             phone_number=phone_number,
             national_id=user_data.national_id,
             address=user_data.address,
-            role=user_data.role
+            role=UserRole.CITIZEN
         )
         
         try:
