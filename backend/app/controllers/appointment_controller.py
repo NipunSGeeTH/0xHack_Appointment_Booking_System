@@ -221,15 +221,21 @@ async def get_appointments_by_department(
 @router.put("/{appointment_id}/status")
 async def update_appointment_status(
     appointment_id: int,
-    new_status: AppointmentStatus,
+    new_status: str,
     notes: Optional[str] = None,
     current_user: User = Depends(require_role("government_officer")),
     db: Session = Depends(get_db)
 ):
-    """Update appointment status (government officers only)."""
+    """Update appointment status (government officers only). Accepts case-insensitive values."""
+    # Normalize and validate status value
+    try:
+        status_enum = AppointmentStatus(new_status.lower())
+    except ValueError:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Invalid status value")
+
     appointment_service = AppointmentService(db)
     updated_appointment = appointment_service.update_appointment_status(
-        appointment_id, new_status, notes
+        appointment_id, status_enum, notes
     )
     
     if not updated_appointment:
@@ -238,7 +244,7 @@ async def update_appointment_status(
             detail="Appointment not found"
         )
     
-    return {"message": f"Appointment status updated to {new_status.value}"}
+    return {"message": f"Appointment status updated to {status_enum.value}"}
 
 @router.get("/analytics/statistics")
 async def get_appointment_statistics(
