@@ -1,0 +1,26 @@
+# Ignore virtual environment files
+.venv
+env
+
+# Ignore Python bytecode files
+*.py[cod]
+
+# Ignore IDE files
+.vscode
+.pycharm
+
+# Ignore FastAPI logs
+logs/
+
+# Ignore test reports
+tests/reports/
+
+# Ignore coverage reports
+.coverage
+
+# Ignore node_modules (if you're using npm or yarn for frontend dependencies)
+node_modules
+
+# Ignore operating system files
+.DS_Store
+Thumbs.db
