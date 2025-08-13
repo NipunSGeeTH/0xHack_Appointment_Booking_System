@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException, status
 from typing import Optional, List
-from datetime import datetime
+from datetime import datetime, timedelta  # Add timedelta here
 
 from ..models import User, UserRole
 from ..schemas import UserCreate, UserUpdate, UserResponse
@@ -76,15 +76,14 @@ class UserService:
 
     def create_user_token(self, user: User) -> dict:
         """Create access token for user."""
-        access_token_expires = datetime.utcnow() + datetime.timedelta(minutes=30)
+        access_token_expires_delta = timedelta(minutes=30)  # This is a timedelta object
         access_token = create_access_token(
-            data={"sub": user.username}, expires_delta=access_token_expires
+            data={"sub": user.username}, expires_delta=access_token_expires_delta
         )
         return {
             "access_token": access_token,
             "token_type": "bearer"
         }
-
     def get_user_by_id(self, user_id: int) -> Optional[User]:
         """Get user by ID."""
         return self.db.query(User).filter(User.id == user_id).first()
